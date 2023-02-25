@@ -1,6 +1,6 @@
 const loadMeal = (searchText) => {
     const url = `https://www.themealdb.com/api/json/v1/1/search.php?s=${searchText}`
-    console.log(url);
+    
     fetch(url)
     .then(res => res.json())
     .then(data => displayMeal(data.meals))
@@ -25,6 +25,11 @@ const displayMeal = meals => {
                         <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional
                             content. This content is a little bit longer.</p>
                     </div>
+
+                    <!-- Button trigger modal -->
+                    <button onclick = "mealDetails(${meal.idMeal})" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#mealDetails">
+                    Meal Details
+                    </button>
         `
         mealContainer.appendChild(mealDiv);
 
@@ -38,6 +43,20 @@ const searchMeals = () => {
     loadMeal(searchText);
 }
 
+const mealDetails = idMeal => {
+    const url = `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${idMeal}`
+    console.log(idMeal);
+    fetch(url)
+    .then(res => res.json())
+    .then(data => displayMealDetails(data.meals[0]))
+}
 
+const displayMealDetails = meal => {
+    document.getElementById('mealDetailsLabel').innerText = meal.strMeal;
+    const mealsDetails = document.getElementById('mealDetailsBody');
+    mealsDetails.innerHTML = `
+        <img class = "img-fluid" src = "${meal.strMealThumb}">
+    `
+}
 
-loadMeal();
+loadMeal('rice');
