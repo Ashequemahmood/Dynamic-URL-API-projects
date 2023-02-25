@@ -27,7 +27,7 @@ const displayMeal = meals => {
                     </div>
 
                     <!-- Button trigger modal -->
-                    <button onclick = "mealDetails(${meal.idMeal})" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#mealDetails">
+                    <button onclick = "mealDetails2(${meal.idMeal})" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#mealDetails">
                     Meal Details
                     </button>
         `
@@ -49,6 +49,22 @@ const mealDetails = idMeal => {
     fetch(url)
     .then(res => res.json())
     .then(data => displayMealDetails(data.meals[0]))
+    .catch(error => {
+        console.log(error);
+    })
+}
+
+// async await
+const mealDetails2 = async(idMeal) => {
+    const url = `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${idMeal}`
+    try{
+        const res = await fetch(url); 
+        const data = await res.json();
+        displayMealDetails(data.meals[0]);
+    }
+    catch(error){
+        console.log(error);
+    }
 }
 
 const displayMealDetails = meal => {
